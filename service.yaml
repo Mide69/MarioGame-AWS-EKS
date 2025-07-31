@@ -3,13 +3,12 @@ kind: Service
 metadata:
   name: mario-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: mario-game
   ports:
     - protocol: TCP
       port: 80
       targetPort: 8080
-      nodePort: 30080
 
       
