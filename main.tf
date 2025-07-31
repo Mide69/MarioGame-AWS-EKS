@@ -47,7 +47,7 @@ data "aws_subnet" "public" {
 resource "aws_eks_cluster" "mario" {
   name     = "super-mario-cluster"
   role_arn = aws_iam_role.example.arn
-  version  = "1.28"
+
 
   vpc_config {
     subnet_ids              = data.aws_subnets.public.ids
