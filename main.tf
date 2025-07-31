@@ -98,6 +98,52 @@ resource "aws_iam_role_policy_attachment" "example-AmazonEC2ContainerRegistryRea
   role       = aws_iam_role.example1.name
 }
 
+# Security group for node group
+resource "aws_security_group" "node_group_sg" {
+  name        = "eks-node-group-sg"
+  description = "Security group for EKS node group"
+  vpc_id      = data.aws_vpc.default.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 30000
+    to_port     = 32767
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port = 0
+    to_port   = 65535
+    protocol  = "tcp"
+    self      = true
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "eks-node-group-sg"
+  }
+}
+
 #create node group
 resource "aws_eks_node_group" "example" {
   cluster_name    = aws_eks_cluster.mario.name
@@ -117,6 +163,8 @@ resource "aws_eks_node_group" "example" {
   
   instance_types = ["t3.medium"]
   capacity_type  = "ON_DEMAND"
+  
+
   
   tags = {
     Name = "super-mario-node-group"
