@@ -1,11 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mario-service
+  name: super-mario-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "classic"
 spec:
   type: LoadBalancer
   selector:
-    app: mario-game
+    app: super-mario-app
   ports:
     - protocol: TCP
       port: 80

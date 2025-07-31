@@ -18,14 +18,14 @@ kubectl apply -f service.yaml
 
 # Wait for deployment to be ready
 echo "Waiting for deployment to be ready..."
-kubectl wait --for=condition=available --timeout=300s deployment/mario-game
+kubectl wait --for=condition=available --timeout=300s deployment/super-mario-app
 
 # Wait for LoadBalancer to get external IP
 echo "Waiting for LoadBalancer to get external IP..."
-kubectl wait --for=jsonpath='{.status.loadBalancer.ingress}' service/mario-service --timeout=300s
+kubectl wait --for=jsonpath='{.status.loadBalancer.ingress}' service/super-mario-service --timeout=300s
 
 # Get LoadBalancer URL
-LB_URL=$(kubectl get svc mario-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+LB_URL=$(kubectl get svc super-mario-service -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
 echo "=================================="
 echo "Mario Game deployed successfully!"
