@@ -3,8 +3,8 @@
 # Deploy Mario Game to EKS
 echo "Deploying Mario Game to EKS..."
 
-# Get cluster name from terraform output
-CLUSTER_NAME=$(terraform output -raw cluster_name)
+# Get cluster name and region
+CLUSTER_NAME="super-mario-cluster"
 REGION="us-west-1"
 
 # Update kubeconfig
@@ -18,10 +18,13 @@ kubectl apply -f service.yaml
 
 # Wait for deployment to be ready
 echo "Waiting for deployment to be ready..."
-kubectl wait --for=condition=available --timeout=300s deployment/super-mario-app
+kubectl wait --for=condition=available --timeout=300s deployment/mario-game
 
-# Get service URL
-echo "Getting service URL..."
-kubectl get svc super-mario-service
+# Get node external IP and service port
+NODE_IP=$(kubectl get nodes -o jsonpath='{.items[0].status.addresses[?(@.type=="ExternalIP")].address}')
+SERVICE_PORT=$(kubectl get svc mario-service -o jsonpath='{.spec.ports[0].nodePort}')
 
-echo "Deployment complete! Check the LoadBalancer URL above to access your Mario game."
+echo "=================================="
+echo "Mario Game deployed successfully!"
+echo "Access your game at: http://$NODE_IP:$SERVICE_PORT"
+echo "=================================="

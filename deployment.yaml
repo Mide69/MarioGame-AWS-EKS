@@ -1,23 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-   name: super-mario-app
+   name: mario-game
    labels:
-      app: super-mario-app
+      app: mario-game
 spec:
    replicas: 1
    selector:
       matchLabels:
-         app: super-mario-app
+         app: mario-game
    template:
       metadata:
          labels:
-            app: super-mario-app
+            app: mario-game
       spec:
           containers:
-           -  name: super-mario-app 
-              image: sevenajay/mario:latest
-              imagePullPolicy: Always
+           -  name: mario-game
+              image: docker.io/pengbai/docker-supermario:latest
               ports:
               - containerPort: 8080
               resources:
